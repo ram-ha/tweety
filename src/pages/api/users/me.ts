@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { withApiSession } from "../../../libs/server/withSession";
-import db from "../../../libs/server/db";
+import { withApiSession } from "@/libs/server/withSession";
+import db from "@/libs/server/db";
+import withHandler, { ResponseType } from "@/libs/server/withHandler";
 
 async function handler(
     req: NextApiRequest,
@@ -18,9 +19,11 @@ async function handler(
         }
     });
     if (!dbUser) {
-        return res.status(404).end();
+        return res.status(404).json({ ok: false, text: "계정이 존재 하지 않습니다." });
     }
-    return res.send({ ...dbUser });
+    return res.status(201).json({ ok: true, dbUser });
 }
 
-export default withApiSession(handler);
+export default withApiSession(
+    withHandler({ method: "GET", handler, isPrivate: true })
+);

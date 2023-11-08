@@ -1,27 +1,27 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import db from "../../../libs/server/db";
+import withHandler, { ResponseType } from "@/libs/server/withHandler";
+import db from "@/libs/server/db";
 
-export default async function handler(
+async function handler(
     req: NextApiRequest,
     res: NextApiResponse<ResponseType>
 ) {
-    if (req.method === "POST") {
-        const { name, email } = req.body;
-        const user = await db.user.findUnique({
-            where: {
-                email
-            }
-        });
-        if (user) {
-            return res.status(200).end();
+    const { name, email } = req.body;
+    const user = await db.user.findUnique({
+        where: {
+            email
         }
-        await db.user.create({
-            data: {
-                name,
-                email
-            }
-        });
-        return res.status(201).end();
+    });
+    if (user) {
+        return res.status(400).json({ ok: false, text: "이미 존재하는 이메일 입니다. 다른 이메일을 사용해주세요." });
     }
-    return res.status(405).end();
+    await db.user.create({
+        data: {
+            name,
+            email
+        }
+    });
+    return res.status(201).json({ ok: true, text: "회원가입 완료! 로그인 해주세요." });
 }
+
+export default withHandler({ method: "POST", handler, isPrivate: false });

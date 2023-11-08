@@ -8,11 +8,12 @@ generator client {
 datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
+  relationMode = "prisma"
 }
 
 model User {
   id              Int       @id @default(autoincrement())
-  name            String    @unique
+  name            String    
   email           String    @unique
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
@@ -24,16 +25,21 @@ model Tweet {
   id              Int       @id @default(autoincrement())
   text            String
   createdAt       DateTime  @default(now())
-  user            User      @relation(fields: [userId], references: [id])
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId          Int
   likes           Like[]
+
+  @@index([userId])
 }
 
 model Like {
   id              Int       @id @default(autoincrement())
   createdAt       DateTime  @default(now())
-  tweet           Tweet     @relation(fields: [tweetId], references: [id])
+  tweet           Tweet     @relation(fields: [tweetId], references: [id], onDelete: Cascade)
   tweetId         Int
-  user            User      @relation(fields: [userId], references: [id])
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId          Int
+
+  @@index([userId])
+  @@index([tweetId])
 }
