@@ -2,13 +2,16 @@ import type { NextPage } from 'next';
 import Layout from '../../components/layout';
 import { useRouter } from 'next/router';
 import useSWR from 'node_modules/swr/core/dist';
-import { Tweet } from '@prisma/client';
+import { Tweet, User } from '@prisma/client';
 import { cls } from '@/libs/client/utils';
 import useMutation from '@/libs/client/useMutation';
 
+interface TweetUser extends Tweet {
+    user: User;
+}
 interface ItemDetailResponse {
     ok: boolean;
-    tweet: Tweet[];
+    tweet: TweetUser;
     isLiked: boolean;
 }
 
@@ -29,7 +32,9 @@ const ItemDetail: NextPage = () => {
                         <div className="w-3 h-14 bg-pink-400 rounded-xl" />
                         <div>
                             <p className="text-md font-medium text-gray-700">{data?.tweet?.user?.name}</p>
-                            <p className="text-xs font-medium text-gray-500">{data?.tweet?.createdAt.substr(0, 10)}</p>
+                            <p className="text-xs font-medium text-gray-500">
+                                {data?.tweet?.createdAt.toLocaleString('en-US').slice(0, 10)}
+                            </p>
                         </div>
                     </div>
                     <button
