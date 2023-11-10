@@ -3,18 +3,21 @@ import Link from 'next/link';
 interface ItemProps {
     title: string;
     id: number;
-    price: number;
+    text: string;
     hearts: number;
 }
 
-export default function Item({ title, price, hearts, id }: ItemProps) {
+export default function Item({ title, text, hearts, id }: ItemProps) {
     return (
-        <Link href={`/products/${id}`} className="flex px-4 pt-5 cursor-pointer justify-between">
+        <Link
+            href={`/tweet/${id}`}
+            className="flex px-4 py-4 rounded-3xl shadow-md shadow-pink-300 border border-pink-200 cursor-pointer justify-between bg-white"
+        >
             <div className="flex space-x-4">
-                <div className="w-20 h-20 bg-gray-400 rounded-md" />
-                <div className="pt-2 flex flex-col">
+                <div className="w-3 h-14 bg-pink-400 rounded-xl" />
+                <div className="flex flex-col justify-center">
                     <h3 className="text-sm font-medium text-gray-900">{title}</h3>
-                    <span className="font-medium mt-1 text-gray-900">${price}</span>
+                    <span className="font-medium w-32 truncate text-gray-900">{text}</span>
                 </div>
             </div>
             <div className="flex space-x-2 items-end justify-end">

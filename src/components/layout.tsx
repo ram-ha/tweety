@@ -3,24 +3,31 @@ import Link from 'next/link';
 import { cls } from '@/libs/client/utils';
 import { useRouter } from 'next/router';
 import FloatingButton from './floating-button';
+import { useSWRConfig } from 'swr';
 
 interface LayoutProps {
     title?: string;
     canGoBack?: boolean;
     hasTabBar?: boolean;
     children: React.ReactNode;
+    userName?: string;
 }
 
-export default function Layout({ title, canGoBack, hasTabBar, children }: LayoutProps) {
+export default function Layout({ title, canGoBack, hasTabBar, children, userName }: LayoutProps) {
     const router = useRouter();
+    const { mutate } = useSWRConfig();
     const onClick = () => {
         router.back();
     };
+
+    const onLogout = () => {
+        mutate('/api/users/me', (prev: any) => ({ ok: !prev.ok }), false);
+    };
     return (
-        <div className="mx-auto max-w-xl w-full h-screen bg-pink-50">
-            <div className="bg-black w-full h-12 max-w-xl justify-center text-lg px-10 font-medium  fixed text-gray-800 border-b top-0  flex items-center">
+        <div className="mx-auto max-w-xl w-full h-full min-h-screen bg-pink-50">
+            <div className="bg-black w-full h-12 max-w-xl justify-center text-lg px-10 font-medium  fixed text-white border-b top-0  flex items-center">
                 {canGoBack ? (
-                    <button onClick={onClick} className="absolute left-4 text-white">
+                    <button onClick={onClick} className="absolute left-4">
                         <svg
                             className="w-6 h-6"
                             fill="none"
@@ -38,6 +45,9 @@ export default function Layout({ title, canGoBack, hasTabBar, children }: Layout
                     </button>
                 ) : null}
                 {title ? <span className={cls(canGoBack ? 'mx-auto' : '', 'text-white')}>{title}</span> : null}
+                {userName ? (
+                    <span className="absolute right-5 border-b-2 border-pink-100 px-2 text-pink-400">{userName}</span>
+                ) : null}
             </div>
             <div className={cls('pt-12', hasTabBar ? 'pb-24' : '')}>{children}</div>
             {hasTabBar ? (
@@ -81,8 +91,8 @@ export default function Layout({ title, canGoBack, hasTabBar, children }: Layout
                             />
                         </svg>
                     </FloatingButton>
-                    <Link
-                        href="/profile"
+                    <button
+                        onClick={onLogout}
                         className={cls(
                             'flex flex-col items-center space-y-2 ',
                             router.pathname === '/profile' ? 'text-pink-500' : 'hover:text-gray-500 transition-colors'
@@ -90,19 +100,23 @@ export default function Layout({ title, canGoBack, hasTabBar, children }: Layout
                     >
                         <svg
                             className="w-7 h-7"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
                         >
                             <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                            ></path>
+                                clipRule="evenodd"
+                                fillRule="evenodd"
+                                d="M3 4.25A2.25 2.25 0 015.25 2h5.5A2.25 2.25 0 0113 4.25v2a.75.75 0 01-1.5 0v-2a.75.75 0 00-.75-.75h-5.5a.75.75 0 00-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 00.75-.75v-2a.75.75 0 011.5 0v2A2.25 2.25 0 0110.75 18h-5.5A2.25 2.25 0 013 15.75V4.25z"
+                            />
+                            <path
+                                clipRule="evenodd"
+                                fillRule="evenodd"
+                                d="M6 10a.75.75 0 01.75-.75h9.546l-1.048-.943a.75.75 0 111.004-1.114l2.5 2.25a.75.75 0 010 1.114l-2.5 2.25a.75.75 0 11-1.004-1.114l1.048-.943H6.75A.75.75 0 016 10z"
+                            />
                         </svg>
-                    </Link>
+                    </button>
                 </nav>
             ) : null}
         </div>

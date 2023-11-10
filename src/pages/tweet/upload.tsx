@@ -10,12 +10,13 @@ import { Tweet } from '@prisma/client';
 import { useEffect } from 'react';
 
 interface UploadTweetForm {
+    title: string;
     text: string;
 }
 
 interface TweetMutation {
     ok: boolean;
-    tweet: Tweet;
+    newTweet: Tweet;
 }
 
 const Upload: NextPage = () => {
@@ -31,15 +32,23 @@ const Upload: NextPage = () => {
         uploadTweet(data);
     };
     useEffect(() => {
+        console.log(data);
         if (data?.ok) {
-            router.replace(`/tweet/${data.tweet.id}`);
+            router.replace(`/tweet/${data.newTweet.id}`);
         }
     }, [data, router]);
     return (
         <Layout canGoBack title="Upload Tweet">
             <form className="p-4 space-y-4" onSubmit={handleSubmit(onValid)}>
+                <Input
+                    register={register('title', { required: true })}
+                    required
+                    label="title"
+                    name="title"
+                    type="text"
+                />
                 <TextArea
-                    register={register('text', { required: '두 글자 이상 입력해주세요.' })}
+                    register={register('text', { required: '10 글자 이상 입력해주세요.', minLength: 10 })}
                     name="text"
                     label="text"
                     placeholder="무얼 기록하고 싶나요? ^o^"

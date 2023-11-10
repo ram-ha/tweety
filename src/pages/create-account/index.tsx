@@ -29,7 +29,7 @@ export default () => {
         if (data) {
             if (data.ok) {
                 alert(data?.text);
-                router.replace('/login');
+                router.replace('/log-in');
             } else {
                 alert(data?.text);
             }

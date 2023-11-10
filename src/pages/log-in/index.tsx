@@ -17,7 +17,7 @@ export default () => {
         reset,
     } = useForm<IForm>();
     const router = useRouter();
-    const [login, { loading, data }] = useMutation<ResponseType>('/api/users/login');
+    const [login, { loading, data }] = useMutation<ResponseType>('/api/users/log-in');
 
     const onValid = (validForm: IForm) => {
         reset();
@@ -31,6 +31,7 @@ export default () => {
                 router.replace('/');
             } else {
                 alert(data?.text);
+                router.replace('/create-account');
             }
         }
     }, [data]);

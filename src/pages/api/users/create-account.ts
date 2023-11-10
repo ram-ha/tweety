@@ -24,4 +24,4 @@ async function handler(
     return res.status(201).json({ ok: true, text: "회원가입 완료! 로그인 해주세요." });
 }
 
-export default withHandler({ method: "POST", handler, isPrivate: false });
+export default withHandler({ methods: ["POST"], handler, isPrivate: false });
