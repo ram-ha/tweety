@@ -6,9 +6,14 @@ import { Tweet } from '@prisma/client';
 import useUser from '@/libs/client/useUser';
 import { useRouter } from 'next/router';
 
+interface Tweets extends Tweet {
+    _count: {
+        likes: number;
+    };
+}
 interface TweetsResponse {
     ok: boolean;
-    newTweet: Tweet[];
+    newTweet: Tweets[];
 }
 
 export default function Home() {
