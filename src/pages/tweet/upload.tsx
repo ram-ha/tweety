@@ -32,7 +32,6 @@ const Upload: NextPage = () => {
         uploadTweet(data);
     };
     useEffect(() => {
-        console.log(data);
         if (data?.ok) {
             router.replace(`/tweet/${data.newTweet.id}`);
         }

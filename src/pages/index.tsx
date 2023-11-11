@@ -17,9 +17,8 @@ interface TweetsResponse {
 }
 
 export default function Home() {
-    const { user, isLoading } = useUser();
-    const router = useRouter();
-    const { data, error } = useSWR<TweetsResponse>('/api/tweets');
+    const { user } = useUser();
+    const { data } = useSWR<TweetsResponse>('/api/tweets');
 
     return (
         <Layout title="홈" hasTabBar userName={user?.name}>

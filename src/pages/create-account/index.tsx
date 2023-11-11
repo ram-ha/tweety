@@ -1,6 +1,7 @@
 import Button from '@/components/button';
 import useMutation from '@/libs/client/useMutation';
 import { ResponseType } from '@/libs/server/withHandler';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -28,7 +29,6 @@ export default () => {
     useEffect(() => {
         if (data) {
             if (data.ok) {
-                alert(data?.text);
                 router.replace('/log-in');
             } else {
                 alert(data?.text);
@@ -64,6 +64,15 @@ export default () => {
                     </div>
                     <Button text="Create Account" />
                 </form>
+                <div className="text-gray-100 text-xs mt-4">
+                    계정이 있으신가요?
+                    <Link
+                        className="cursor-pointer ml-1 underline text-red-50 hover:text-white hover:font-semibold"
+                        href="/log-in"
+                    >
+                        로그인
+                    </Link>
+                </div>
             </div>
         </div>
     );

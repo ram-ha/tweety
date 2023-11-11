@@ -27,7 +27,6 @@ export default () => {
     useEffect(() => {
         if (data) {
             if (data.ok) {
-                alert(data?.text);
                 router.replace('/');
             } else {
                 alert(data?.text);

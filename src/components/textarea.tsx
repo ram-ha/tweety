@@ -19,7 +19,7 @@ export default function TextArea({ label, name, register, ...rest }: TextAreaPro
                 id={name}
                 {...register}
                 className="mt-1 shadow-sm w-full focus:ring-pink-500 rounded-md border-gray-300 focus:border-pink-500 px-2 py-2"
-                rows={4}
+                rows={15}
                 {...rest}
             />
         </div>
