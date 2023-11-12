@@ -1,13 +1,23 @@
 import { cls } from '@/libs/client/utils';
 import { useRouter } from 'next/router';
-import { useSWRConfig } from 'swr';
+import { ResponseType } from '@/libs/server/withHandler';
+import useMutation from '@/libs/client/useMutation';
+import { useEffect } from 'react';
 
 export default () => {
     const router = useRouter();
-    const { mutate } = useSWRConfig();
+    const [logout, { data }] = useMutation<ResponseType>('/api/users/log-out');
     const onLogout = () => {
-        mutate('/api/users/me', (prev: any) => ({ ok: !prev.ok }), false);
+        logout('/api/users/log-out');
     };
+
+    useEffect(() => {
+        if (data) {
+            if (data.ok) {
+                router.replace('/log-in');
+            }
+        }
+    }, [data, router]);
 
     return (
         <button

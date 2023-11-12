@@ -33,7 +33,7 @@ export default () => {
                 router.replace('/create-account');
             }
         }
-    }, [data]);
+    }, [data, router]);
     return (
         <div className="mx-auto max-w-xl w-full h-screen bg-pink-50 flex items-center justify-center">
             <div className="flex flex-col  bg-pink-400 w-72 px-4 py-5 rounded-xl shadow-md">
