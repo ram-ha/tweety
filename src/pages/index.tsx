@@ -22,12 +22,7 @@ export default function Home() {
 
     return (
         <Layout title="홈" hasTabBar userName={user?.name}>
-            {data?.newTweet.length === 0 ? (
-                <div className="px-5 py-5 text-sm">
-                    아직 게시글이 없습니다😢.
-                    <br /> 새로 작성해주세요✏️.
-                </div>
-            ) : (
+            {data ? (
                 <div className="flex flex-col space-y-5 px-5 py-5">
                     {data?.newTweet?.map((tweet) => (
                         <Item
@@ -38,6 +33,11 @@ export default function Home() {
                             hearts={tweet._count.likes}
                         />
                     ))}
+                </div>
+            ) : (
+                <div className="px-5 py-5 text-sm">
+                    아직 게시글이 없습니다😢.
+                    <br /> 새로 작성해주세요✏️.
                 </div>
             )}
         </Layout>
